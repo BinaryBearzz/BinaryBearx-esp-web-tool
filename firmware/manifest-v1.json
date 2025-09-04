@@ -1,5 +1,5 @@
 {
-  "name": "BinaryBearx Demo v1",
+  "name": "AIS 4G Board Example Firmware v1",
   "new_install_prompt_erase": true,
   "builds": [
     {
