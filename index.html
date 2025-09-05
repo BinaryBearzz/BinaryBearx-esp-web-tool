@@ -74,7 +74,7 @@
       small.web-version {
         position: absolute;
         bottom: 10px;
-        right: 10px;
+        left: 15px;
         font-size: 16px;
         font-weight: bolder;
         font-style: italic;
@@ -118,6 +118,19 @@
       color: red;
       font-weight: bold;
     }
+
+    #power-by {
+      position: fixed;
+      right: 10px;
+      /* distance from the right edge */
+      bottom: 10px;
+      /* distance from the bottom edge */
+      font-size: 10px;
+      color: #888;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
   </style>
 </head>
 
@@ -143,8 +156,15 @@
     <div id="notSupported" style="display: none;">
       ❌ Your browser does not support the Web Serial API. Try Google Chrome or Chromium-based browsers.
     </div>
-
     <small class="web-version">ver.1.0.0</small>
+
+    <div id="power-by">Powered by ESP Tool & improv-wifi</div>
+    <div style="margin-top: 15px;">
+      <a href="https://github.com/BinaryBearzz" target="_blank" rel="noopener noreferrer"
+        style="text-decoration:none; font-size: 24px; color: black;">
+        <i class="fab fa-github"></i> GitHub
+      </a>
+    </div>
 
   </div>
 
