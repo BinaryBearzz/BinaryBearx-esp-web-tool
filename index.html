@@ -8,8 +8,6 @@
   <title>BinaryBearx ESP Web Flasher</title>
   <script type="module" src="https://unpkg.com/esp-web-tools@7.3.1/dist/web/install-button.js?module"></script>
   <style>
-
-    
     :root {
       /* Inner shadow */
       --shadow-offset: 0;
@@ -131,7 +129,6 @@
     <div id="main" style="display: none;">
       <select id="firmware-select">
         <option value="">⬇️ Select Firmware</option>
-        <option value="firmware/manifest-v1.json">AIS 4G Board Example Firmware v1.0</option>
       </select>
 
       <br>
@@ -155,6 +152,29 @@
 
     const body = document.body;
     const primaryImage = "/BinaryBearx-esp-web-tool/image/binarybearx.png";
+
+    async function loadFirmwareList() {
+      try {
+        // Step 1: fetch the index file that lists all manifests
+        const index = await fetch("firmware/index.json").then(r => r.json());
+
+        // Step 2: get the select element
+        const select = document.getElementById("firmware-select");
+
+        // Step 3: loop through each manifest entry
+        for (const fw of index) {
+          // Example manifest entry: { "file": "manifest-v1.json", "name": "Firmware v1.0" }
+          const option = document.createElement("option");
+          option.value = "firmware/" + fw.file;
+          option.textContent = fw.name;
+          select.appendChild(option);
+        }
+      } catch (err) {
+        console.error("Error loading firmware list:", err);
+      }
+    }
+
+    loadFirmwareList();
 
     const img = new Image();
     img.onload = () => {
