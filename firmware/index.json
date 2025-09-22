@@ -1,3 +1,4 @@
 [
-  { "file": "manifest-v1.json", "name": "AIS 4G Board Example Firmware v1" }
+  { "file": "manifest-v1.json", "name": "AIS 4G Board Example Firmware v1" },
+  { "file": "manifest-v2.json", "name": "AIS 4G Board Example Firmware v2" }
 ]
