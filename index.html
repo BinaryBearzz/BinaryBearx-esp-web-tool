@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <title>BinaryBearx ESP Web Flasher</title>
   <script type="module" src="https://unpkg.com/esp-web-tools@7.3.1/dist/web/install-button.js?module"></script>
+  <script type="module"
+    src="https://cdn.jsdelivr.net/npm/improv-wifi-serial-sdk@2.5.0/dist/web/serial-launch-button.js"></script>
   <style>
     :root {
       /* Inner shadow */
@@ -132,6 +134,30 @@
       padding: 4px 8px;
       border-radius: 4px;
     }
+
+    improv-wifi-serial-launch-button a[slot="activate"] {
+      background-color: #3295ff;
+      /* Bootstrap blue */
+      color: white;
+      /* White text */
+      padding: 10px 20px;
+      /* Some padding */
+      border-radius: 5px;
+      /* Rounded corners */
+      text-decoration: none;
+      /* Remove underline */
+      display: inline-block;
+      /* Make it behave like a button */
+      font-weight: bold;
+      cursor: pointer;
+      /* Pointer cursor on hover */
+      transition: background-color 0.3s ease;
+    }
+
+    improv-wifi-serial-launch-button a[slot="activate"]:hover {
+      background-color: #7ab8fa;
+      /* Darker blue on hover */
+    }
   </style>
 </head>
 
@@ -153,6 +179,11 @@
         NOTE: Please close any application using your device’s COM port (e.g., Serial Monitor).
       </div>
     </div>
+    <br>
+    <improv-wifi-serial-launch-button>
+      <a href="#" slot="activate">[BETA] Config Wi-Fi via Serial</a>
+      <span slot="unsupported">⚠️ Your browser does not support provisioning.</span>
+    </improv-wifi-serial-launch-button>
 
     <div id="notSupported" style="display: none;">
       ❌ Your browser does not support the Web Serial API. Try Google Chrome or Chromium-based browsers.
