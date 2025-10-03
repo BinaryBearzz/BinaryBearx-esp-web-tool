@@ -1,3 +1,4 @@
 [
-  { "file": "manifest-v2.json", "name": "AIS Jump-4G Board Example firmware" }
+  { "file": "manifest-v2.json", "name": "AIS Jump-4G Board Example [4G GSM] firmware" },
+  { "file": "manifest-jumpwifi.json", "name": "AIS Jump-4G Board Example [WiFi] firmware" }
 ]

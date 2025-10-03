@@ -1,5 +1,5 @@
 {
-  "name": "AIS Jump-4G Board Example firmware",
+  "name": "AIS Jump-4G Board Example [4G GSM]",
   "new_install_prompt_erase": true,
   "builds": [
     {
