@@ -1,0 +1,14 @@
+{
+  "name": "ADI-4G Board Example 3 Sensors firmware [4G GSM] [Final]",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/bootloader.bin", "offset": 4096 },       
+        { "path": "/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/partitions.bin", "offset": 32768 } ,
+        { "path": "/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}
