@@ -1,5 +1,5 @@
 {
-  "name": "AIS 4G Board Example [4G GSM]",
+  "name": "AIS 4G Board Example [4G GSM] firmware[ExtensionBoard]",
   "new_install_prompt_erase": true,
   "builds": [
     {
