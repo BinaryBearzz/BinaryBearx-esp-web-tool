@@ -1,5 +1,6 @@
 [
   { "file": "manifest-v2.json", "name": "AIS 4G Board Example [4G GSM] firmware[ExtensionBoard]" },
   { "file": "manifest-v3.json", "name": "AIS 4G Board Example [4G GSM] firmware[Builtin LED+Sensor]" },
+  { "file": "manifest-OTOD-example.json", "name": "OTOD-4GBoard Example Extension firmware [4G GSM]" },
   { "file": "manifest-ADI-3sens-final.json", "name": "ADI-4G Board Example 3 Sensors firmware[Final]" }
 ]

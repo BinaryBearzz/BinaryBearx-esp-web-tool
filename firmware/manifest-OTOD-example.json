@@ -1,0 +1,14 @@
+{
+  "name": "OTOD-4GBoard Example firmware [4G GSM+Extension]",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "/BinaryBearx-esp-web-tool/firmware/OTOD-4G-Example/bootloader.bin", "offset": 4096 },       
+        { "path": "/BinaryBearx-esp-web-tool/firmware/OTOD-4G-Example/partitions.bin", "offset": 32768 } ,
+        { "path": "/BinaryBearx-esp-web-tool/firmware/OTOD-4G-Example/firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}
