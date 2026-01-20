@@ -1,0 +1,14 @@
+{
+  "name": "AIS 4G Board Example [4G GSM] firmware[Builtin LED+Sensor]",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "/BinaryBearx-esp-web-tool/firmware/version4_tinygsm/bootloader.bin", "offset": 4096 },       
+        { "path": "/BinaryBearx-esp-web-tool/firmware/version4_tinygsm/partitions.bin", "offset": 32768 } ,
+        { "path": "/BinaryBearx-esp-web-tool/firmware/version4_tinygsm/firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}
