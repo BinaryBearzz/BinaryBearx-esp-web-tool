@@ -1,0 +1,14 @@
+{
+  "name": "AIS 4G Board [AI-CAMERA-BOX]",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "/BinaryBearx-esp-web-tool/firmware/aicamerabox/bootloader.bin", "offset": 4096 },       
+        { "path": "/BinaryBearx-esp-web-tool/firmware/aicamerabox/partitions.bin", "offset": 32768 } ,
+        { "path": "/BinaryBearx-esp-web-tool/firmware/aicamerabox/firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}
