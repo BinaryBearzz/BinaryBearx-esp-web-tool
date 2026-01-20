@@ -1,5 +1,5 @@
 {
-  "name": "AIS 4G Board Example [4G GSM] firmware[Builtin LED+Sensor]",
+  "name": "AIS 4G Board Basic [4G TinyGSM lib]",
   "new_install_prompt_erase": true,
   "builds": [
     {
