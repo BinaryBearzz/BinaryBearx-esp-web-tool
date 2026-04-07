@@ -1,0 +1,14 @@
+{
+  "name": "AIS 4G Board [4G GSM] Pre-Flash firmware V1",
+  "new_install_prompt_erase": true,
+  "builds": [
+    { 
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "/BinaryBearx-esp-web-tool/firmware/pre-flash-v1/bootloader.bin", "offset": 4096 },       
+        { "path": "/BinaryBearx-esp-web-tool/firmware/pre-flash-v1/partitions.bin", "offset": 32768 } ,
+        { "path": "/BinaryBearx-esp-web-tool/firmware/pre-flash-v1/firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}
