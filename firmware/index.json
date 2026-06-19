@@ -1,9 +1,10 @@
 [
+  { "file": "manifest-pre-flash-v1.json", "name": "AIS 4G Board [4G GSM] Pre-Flash firmware V1" },
+  { "file": "manifest-pre-flash-v2-signal.json", "name": "AIS 4G Board [4G GSM] Pre-Flash firmware V2 Signal Analyzer" },
+  { "file": "manifest-aicamera-box.json", "name": "AIS 4G Board [AI-CAMERA-BOX]" },
+  { "file": "manifest-v4-tinygsm.json", "name": "AIS 4G Board Basic [4G TinyGSM lib]" },
   { "file": "manifest-v2.json", "name": "AIS 4G Board Example [4G GSM] firmware[ExtensionBoard]" },
   { "file": "manifest-v5.json", "name": "AIS 4G Board Example [4G GSM] firmware[BuiltinLED+Sensor+INTERVAL]" },
-  { "file": "manifest-OTOD-example.json", "name": "OTOD-4GBoard Example Extension firmware [4G GSM]" },
   { "file": "manifest-ADI-3sens-final.json", "name": "ADI-4G Board Example 3 Sensors firmware[Final]" },
-  { "file": "manifest-aicamera-box.json", "name": "AIS 4G Board [AI-CAMERA-BOX]" },
-  { "file": "manifest-pre-flash-v1.json", "name": "AIS 4G Board [4G GSM] Pre-Flash firmware V1" },
-  { "file": "manifest-v4-tinygsm.json", "name": "AIS 4G Board Basic [4G TinyGSM lib]" }
+  { "file": "manifest-OTOD-example.json", "name": "OTOD-4GBoard Example Extension firmware [4G GSM]" }
 ]
