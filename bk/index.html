@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="https://binarybearzz.github.io/BinaryBearx-esp-web-tool/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/BinaryBearx-esp-web-tool/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <title>BinaryBearx ESP Web Flasher</title>
   <script type="module" src="https://unpkg.com/esp-web-tools@7.3.1/dist/web/install-button.js?module"></script>
@@ -50,11 +50,11 @@
     }
 
     .bg-default {
-      background-image: url('https://binarybearzz.github.io/BinaryBearx-esp-web-tool/image/binarybearx.png');
+      background-image: url('/BinaryBearx-esp-web-tool/image/binarybearx.png');
     }
 
     .bg-fallback {
-      background-image: url('https://binarybearzz.github.io/BinaryBearx-esp-web-tool/image/binarybearx.png');
+      background-image: url('/image/binarybearx.png');
     }
 
     .container {
@@ -199,12 +199,12 @@
   <script>
 
     const body = document.body;
-    const primaryImage = "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/image/binarybearx.png";
+    const primaryImage = "/BinaryBearx-esp-web-tool/image/binarybearx.png";
 
     async function loadFirmwareList() {
       try {
         // Step 1: fetch the index file that lists all manifests
-        const index = await fetch("https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/index.json").then(r => r.json());
+        const index = await fetch("firmware/index.json").then(r => r.json());
 
         // Step 2: get the select element
         const select = document.getElementById("firmware-select");

@@ -5,9 +5,9 @@
     {
       "chipFamily": "ESP32",
       "parts": [
-        { "path": "/BinaryBearx-esp-web-tool/firmware/jumpExtImprovWiFi/bootloader.bin", "offset": 4096 },       
-        { "path": "/BinaryBearx-esp-web-tool/firmware/jumpExtImprovWiFi/partitions.bin", "offset": 32768 } ,
-        { "path": "/BinaryBearx-esp-web-tool/firmware/jumpExtImprovWiFi/firmware.bin", "offset": 65536 }
+        { "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/jumpExtImprovWiFi/bootloader.bin", "offset": 4096 },       
+        { "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/jumpExtImprovWiFi/partitions.bin", "offset": 32768 } ,
+        { "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/jumpExtImprovWiFi/firmware.bin", "offset": 65536 }
       ]
     }
   ]

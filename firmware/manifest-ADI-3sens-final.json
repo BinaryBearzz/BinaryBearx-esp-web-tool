@@ -5,9 +5,9 @@
     {
       "chipFamily": "ESP32",
       "parts": [
-        { "path": "/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/bootloader.bin", "offset": 4096 },       
-        { "path": "/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/partitions.bin", "offset": 32768 } ,
-        { "path": "/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/firmware.bin", "offset": 65536 }
+        { "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/bootloader.bin", "offset": 4096 },       
+        { "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/partitions.bin", "offset": 32768 } ,
+        { "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/ADI-Example3sens-final/firmware.bin", "offset": 65536 }
       ]
     }
   ]

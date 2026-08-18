@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BinaryBearx ESP Web Flasher - Project Explanation</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f6f8fb;
+            --panel: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --accent: #2563eb;
+            --border: #dbe3ef;
+            --code: #0f172a;
+            --code-bg: #eef4ff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        header {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+            margin-bottom: 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            line-height: 1.25;
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            margin: 0 0 12px;
+        }
+
+        h3 {
+            margin: 0 0 8px;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin: 0;
+            max-width: 75ch;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-rows: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin: 0 0 16px;
+        }
+
+        .lang-button {
+            border: 1px solid var(--border);
+            background: var(--panel);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 8px 14px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .lang-button.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        ul,
+        ol {
+            margin-top: 8px;
+        }
+
+        li+li {
+            margin-top: 6px;
+        }
+
+        code,
+        pre {
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            font-size: 0.95rem;
+        }
+
+        code {
+            background: var(--code-bg);
+            color: var(--code);
+            padding: 0.15rem 0.35rem;
+            border-radius: 6px;
+        }
+
+        pre {
+            background: #0b1020;
+            color: #e5eefc;
+            padding: 16px;
+            border-radius: 12px;
+            overflow: auto;
+            border: 1px solid #1e293b;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .table th,
+        .table td {
+            text-align: left;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        .table th {
+            background: #f3f7ff;
+            color: #111827;
+            width: 190px;
+        }
+
+        .note {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e3a8a;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .danger {
+            background: #fff7ed;
+            border-color: #fed7aa;
+            color: #9a3412;
+        }
+
+        .topology {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 18px;
+            border-radius: 14px;
+            overflow: auto;
+            border: 1px solid #1e293b;
+        }
+        .split-topology {
+            background: linear-gradient(180deg, #f0f9ff 0%, #f8fcff 100%);
+            border: 1px solid #d9eefb;
+            padding: 14px;
+            border-radius: 12px;
+        }
+
+        .flow-map {
+            display: grid;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .flow-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .flow-node {
+            position: relative;
+            background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            min-height: 120px;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
+        }
+
+        .flow-node strong {
+            display: block;
+            font-size: 0.98rem;
+            margin-bottom: 6px;
+            color: #0f172a;
+        }
+
+        .flow-node p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.94rem;
+        }
+
+        .flow-tag {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+
+        .flow-arrow {
+            text-align: center;
+            color: #60a5fa;
+            font-size: 24px;
+            line-height: 1;
+            margin: -2px 0;
+        }
+
+        .flow-branch {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .flow-node.success {
+            border-color: #bbf7d0;
+            background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.08);
+        }
+
+        .flow-node.success .flow-tag {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .flow-node.error {
+            border-color: #fecaca;
+            background: linear-gradient(180deg, #fff5f5 0%, #ffffff 100%);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.08);
+        }
+
+        .flow-node.error .flow-tag {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .flow-shell {
+            margin-top: 18px;
+            padding: 18px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+            border: 1px solid var(--border);
+        }
+
+        .flow-line {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        .flow-node {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.08);
+            min-height: 150px;
+        }
+
+        .flow-node::after {
+            content: "→";
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .flow-node:last-child::after {
+            display: none;
+        }
+
+        .flow-step {
+            display: inline-flex;
+            width: 34px;
+            height: 34px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .flow-node h3 {
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        .flow-node p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .flow-branch {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .flow-result {
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+        }
+
+        .flow-result.success {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .flow-result.error {
+            background: #fff7ed;
+            border-color: #fed7aa;
+        }
+
+        .flow-caption {
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 820px) {
+            .flow-node::after {
+                content: "↓";
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -18px;
+                transform: translateX(-50%);
+            }
+
+            .flow-line {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            color: var(--muted);
+            font-size: 0.95rem;
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        [data-lang] {
+            display: none;
+        }
+
+        body[data-current-lang="en"] [data-lang="en"],
+        body[data-current-lang="th"] [data-lang="th"] {
+            display: block;
+        }
+
+        body[data-current-lang="en"] span[data-lang="en"],
+        body[data-current-lang="th"] span[data-lang="th"],
+        body[data-current-lang="en"] strong[data-lang="en"],
+        body[data-current-lang="th"] strong[data-lang="th"] {
+            display: inline;
+        }
+
+        a {
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body data-current-lang="en">
+    <div class="wrap">
+        <div class="toolbar" aria-label="Language switcher">
+            <button class="lang-button active" type="button" data-set-lang="en">EN</button>
+            <button class="lang-button" type="button" data-set-lang="th">TH</button>
+        </div>
+
+        <header>
+            <span class="label">
+                <span data-lang="en">Project guide</span>
+                <span data-lang="th">คู่มือโปรเจกต์</span>
+            </span>
+            <h1>BinaryBearx ESP Web Flasher</h1>
+            <p class="subtitle" data-lang="en">
+                This project is a static browser-based ESP firmware flasher. It uses HTML, JSON, and firmware manifest
+                files — not a backend API — to show firmware options and flash ESP32 / ESP8266 devices directly from the
+                browser.
+            </p>
+            <p class="subtitle" data-lang="th">
+                โปรเจกต์นี้เป็นหน้าเว็บแฟลชเฟิร์มแวร์แบบ static ทำงานในเบราว์เซอร์ ใช้ HTML, JSON และ manifest
+                ของเฟิร์มแวร์ โดยไม่ต้องมี backend API เพื่อแสดงรายการเฟิร์มแวร์และแฟลชไปยัง ESP32 / ESP8266
+                โดยตรงจากเบราว์เซอร์
+            </p>
+        </header>
+
+        <section class="card">
+            <span class="label">
+                <span data-lang="en">How the project works</span>
+                <span data-lang="th">การทำงานของโปรเจกต์</span>
+            </span>
+            <h2 data-lang="en">UI flow mapping when a user selects firmware</h2>
+            <h2 data-lang="th">แผนภาพการไหลของ UI เมื่อผู้ใช้เลือกเฟิร์มแวร์</h2>
+            <div class="topology" data-lang="en">
+                <p>A clear UI should expose the flashing path as a visible sequence: what was loaded, what was selected,
+                    when the browser asks for a device, and where success or failure can happen.</p>
+                <div class="flow-map">
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">01 Loading</span>
+                            <strong>Page loads firmware data</strong>
+                            <p>The page fetches <code>index.json</code> from the public firmware host and prepares the
+                                dropdown.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">02 Check</span>
+                            <strong>Browser capability is checked</strong>
+                            <p>If Web Serial is unavailable, the UI must stop here and explain why flashing cannot
+                                continue.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">03 Ready</span>
+                            <strong>Firmware list is ready</strong>
+                            <p>The firmware choices are visible, but install should still wait until the user selects
+                                one item.</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">04 Select</span>
+                            <strong>User chooses a firmware</strong>
+                            <p>The selected manifest name is resolved into a full manifest URL and bound to the install
+                                button.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">05 Install</span>
+                            <strong>User clicks install</strong>
+                            <p>The browser starts the ESP Web Tools flow for the selected manifest.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">06 Connect</span>
+                            <strong>User selects a serial port</strong>
+                            <p>The browser asks which connected ESP device should be used for flashing.</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">07 Flashing</span>
+                            <strong>Tool downloads and writes binaries</strong>
+                            <p>The manifest is read, binaries are downloaded from the configured host, and data is
+                                written to the ESP device.</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-branch">
+                        <div class="flow-node success">
+                            <span class="flow-tag">08 Success</span>
+                            <strong>Flashing completed</strong>
+                            <p>The UI should show the selected firmware name, completion status, and a simple next
+                                action.</p>
+                        </div>
+                        <div class="flow-node error">
+                            <span class="flow-tag">08 Error</span>
+                            <strong>Flashing failed</strong>
+                            <p>The UI should distinguish manifest issues, download failures, serial access problems, and
+                                unsupported browsers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="topology" data-lang="th">
+                <p>UI ที่ดีควรทำให้ flow การแฟลชมองเห็นได้ชัด ผู้ใช้จะเห็นว่าอะไรถูกโหลด อะไรถูกเลือก
+                    เบราว์เซอร์กำลังถามหาอุปกรณ์เมื่อไร และตรงไหนที่อาจสำเร็จหรือผิดพลาด</p>
+                <div class="flow-map">
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">01 Loading</span>
+                            <strong>หน้าเว็บโหลดข้อมูลเฟิร์มแวร์</strong>
+                            <p>หน้าเว็บดึง <code>index.json</code> จากแหล่งโฮสต์ไฟล์เฟิร์มแวร์สาธารณะและเตรียม dropdown
+                            </p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">02 Check</span>
+                            <strong>ตรวจความสามารถของเบราว์เซอร์</strong>
+                            <p>ถ้าไม่มี Web Serial UI ควรหยุดที่จุดนี้และอธิบายให้ผู้ใช้รู้ว่าทำไมจึงแฟลชต่อไม่ได้</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">03 Ready</span>
+                            <strong>รายการเฟิร์มแวร์พร้อมใช้งาน</strong>
+                            <p>ผู้ใช้เห็นตัวเลือกแล้ว แต่ปุ่มติดตั้งควรรอจนกว่าจะมีการเลือกเฟิร์มแวร์</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">04 Select</span>
+                            <strong>ผู้ใช้เลือกเฟิร์มแวร์</strong>
+                            <p>ชื่อ manifest ที่เลือกจะถูกแปลงเป็น full manifest URL แล้วผูกกับปุ่มติดตั้ง</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">05 Install</span>
+                            <strong>ผู้ใช้กดติดตั้ง</strong>
+                            <p>เบราว์เซอร์เริ่ม flow ของ ESP Web Tools ตาม manifest ที่เลือก</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">06 Connect</span>
+                            <strong>ผู้ใช้เลือก serial port</strong>
+                            <p>เบราว์เซอร์จะถามว่าจะใช้อุปกรณ์ ESP ตัวไหนสำหรับการแฟลช</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">07 Flashing</span>
+                            <strong>ระบบดาวน์โหลดและเขียน binary</strong>
+                            <p>manifest ถูกอ่าน ไฟล์ binary ถูกดาวน์โหลดจาก host ที่ตั้งไว้ และข้อมูลถูกเขียนลงอุปกรณ์
+                                ESP</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-branch">
+                        <div class="flow-node success">
+                            <span class="flow-tag">08 Success</span>
+                            <strong>แฟลชสำเร็จ</strong>
+                            <p>UI ควรแสดงชื่อเฟิร์มแวร์ที่เลือก สถานะสำเร็จ และ action ถัดไปแบบสั้นชัดเจน</p>
+                        </div>
+                        <div class="flow-node error">
+                            <span class="flow-tag">08 Error</span>
+                            <strong>แฟลชไม่สำเร็จ</strong>
+                            <p>UI ควรแยกให้ได้ว่าปัญหาเกิดจาก manifest, การดาวน์โหลดไฟล์, serial access
+                                หรือเบราว์เซอร์ไม่รองรับ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid">
+            <section class="card">
+                <span class="label">
+                    <span data-lang="en">JSON roles</span>
+                    <span data-lang="th">หน้าที่ของ JSON</span>
+                </span>
+                <h2 data-lang="en">What index.json is made for</h2>
+                <h2 data-lang="th">index.json มีไว้ทำอะไร</h2>
+                <div data-lang="en">
+                    <p><code>firmware/index.json</code> is the list used by the UI. In the current project, this file is
+                        served from the public GitHub Pages repository. It does not contain flashing details. Its only
+                        job is to tell the page which manifest entries are available and what label to show for each
+                        one.</p>
+                    <ul>
+                        <li>Acts as the source for the dropdown menu.</li>
+                        <li>Keeps the main page simple, because firmware options can change without editing much
+                            JavaScript.</li>
+                        <li>Lets the public repository own firmware metadata while the website can live on a separate
+                            domain.</li>
+                        <li>Lets you add, remove, or rename firmware options in one place.</li>
+                    </ul>
+                    <p><strong>Example `index.json`</strong></p>
+                    <pre>[
+  {
+    "name": "AIS 4G Board [VirtualThing for test]",
+    "file": "manifest-virtualthingconn.json"
+  },
+  {
+    "name": "ADI Example 3 Sensors",
+    "file": "manifest-ADI-3sens.json"
+  }
+]</pre>
+                </div>
+                <div data-lang="th">
+                    <p><code>firmware/index.json</code> คือรายการที่ UI ใช้อ่านเพื่อสร้างเมนูเลือกเฟิร์มแวร์
+                        โดยในโปรเจกต์ปัจจุบันไฟล์นี้ถูกเสิร์ฟจาก public GitHub Pages repository
+                        ไฟล์นี้ไม่ได้เก็บรายละเอียดการแฟลช หน้าที่ของมันคือบอกว่ามี manifest อะไรบ้าง
+                        และแต่ละอันควรแสดงชื่ออะไร</p>
+                    <ul>
+                        <li>เป็นแหล่งข้อมูลของ dropdown</li>
+                        <li>ทำให้หน้าหลักเรียบง่าย เพราะเพิ่มหรือลดเฟิร์มแวร์ได้โดยแทบไม่ต้องแก้ JavaScript</li>
+                        <li>ช่วยให้ public repository เป็นเจ้าของ metadata ของเฟิร์มแวร์ได้ แม้หน้าเว็บจะอยู่คนละโดเมน
+                        </li>
+                        <li>ช่วยให้จัดการการเพิ่ม ลบ หรือเปลี่ยนชื่อรายการได้จากจุดเดียว</li>
+                    </ul>
+                    <p><strong>ตัวอย่าง `index.json`</strong></p>
+                    <pre>[
+  {
+    "name": "AIS 4G Board [VirtualThing for test]",
+    "file": "manifest-virtualthingconn.json"
+  },
+  {
+    "name": "ADI Example 3 Sensors",
+    "file": "manifest-ADI-3sens.json"
+  }
+]</pre>
+                </div>
+            </section>
+
+            <section class="card">
+                <span class="label">
+                    <span data-lang="en">JSON roles</span>
+                    <span data-lang="th">หน้าที่ของ JSON</span>
+                </span>
+                <h2 data-lang="en">What manifest JSON is made for</h2>
+                <h2 data-lang="th">manifest JSON มีไว้ทำอะไร</h2>
+                <div data-lang="en">
+                    <p>A manifest file contains the flashing instructions for one firmware package. This is the file ESP
+                        Web Tools reads when the user clicks install.</p>
+                    <ul>
+                        <li>Defines which chip or board the package targets.</li>
+                        <li>Lists binary files and the flash addresses used during install.</li>
+                        <li>Can include metadata such as name, version, and optional behavior like Improv support.</li>
+                    </ul>
+                    <p><strong>Example manifest JSON</strong></p>
+                    <pre>{
+  "name": "AIS 4G Board [VirtualThing for test]",
+  "version": "1.0.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/virtualThingConn/bootloader.bin",
+          "offset": 4096
+        },
+        {
+          "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/virtualThingConn/partitions.bin",
+          "offset": 32768
+        },
+        {
+          "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/virtualThingConn/firmware.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}</pre>
+                </div>
+                <div data-lang="th">
+                    <p>ไฟล์ manifest คือคำอธิบายชุดคำสั่งสำหรับแฟลชเฟิร์มแวร์หนึ่งชุด เป็นไฟล์ที่ ESP Web Tools
+                        จะอ่านตอนผู้ใช้กดติดตั้ง</p>
+                    <ul>
+                        <li>กำหนดว่าเฟิร์มแวร์นี้ใช้กับชิปหรือบอร์ดประเภทใด</li>
+                        <li>ระบุไฟล์ไบนารีและ address ที่ต้องใช้ตอนแฟลช</li>
+                        <li>อาจมีข้อมูลเพิ่มเติม เช่น ชื่อ เวอร์ชัน และพฤติกรรมเสริมอย่าง Improv</li>
+                    </ul>
+                    <p><strong>ตัวอย่าง manifest JSON</strong></p>
+                    <pre>{
+  "name": "AIS 4G Board [VirtualThing for test]",
+  "version": "1.0.0",
+  "new_install_prompt_erase": true,
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/virtualThingConn/bootloader.bin",
+          "offset": 4096
+        },
+        {
+          "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/virtualThingConn/partitions.bin",
+          "offset": 32768
+        },
+        {
+          "path": "https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/virtualThingConn/firmware.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}</pre>
+                </div>
+            </section>
+        </div>
+
+        <section class="card">
+            <span class="label">
+                <span data-lang="en">What to prepare</span>
+                <span data-lang="th">สิ่งที่ต้องเตรียม</span>
+            </span>
+            <h2 data-lang="en">Checklist for adding or updating firmware</h2>
+            <h2 data-lang="th">สิ่งที่ต้องเตรียมเมื่อเพิ่มหรือแก้เฟิร์มแวร์</h2>
+            <ol data-lang="en">
+                <li>Create or update the manifest file in <code>firmware/</code>.</li>
+                <li>Add the manifest entry to <code>firmware/index.json</code>.</li>
+                <li>Make sure every binary URL in the manifest is valid and accessible.</li>
+                <li>Make sure the frontend knows the public GitHub Pages base URL used to resolve <code>file</code>
+                    entries into full manifest URLs.</li>
+                <li>Keep the display name short and understandable for users.</li>
+                <li>Open <code>index.html</code> in Chrome or another Chromium-based browser to confirm the list loads
+                    and the install button reacts to selection.</li>
+            </ol>
+            <ol data-lang="th">
+                <li>สร้างหรือแก้ไฟล์ manifest ใน <code>firmware/</code></li>
+                <li>เพิ่มรายการ manifest ลงใน <code>firmware/index.json</code></li>
+                <li>ตรวจว่า binary URL ทุกตัวใน manifest เปิดได้จริง</li>
+                <li>ตรวจว่า frontend รู้จัก base URL ของ public GitHub Pages ที่ใช้ประกอบค่า <code>file</code>
+                    ให้กลายเป็น full manifest URL</li>
+                <li>ตั้งชื่อที่แสดงให้สั้นและเข้าใจง่ายสำหรับผู้ใช้</li>
+                <li>เปิด <code>index.html</code> ใน Chrome หรือเบราว์เซอร์ตระกูล Chromium
+                    เพื่อตรวจว่ารายการโหลดขึ้นและปุ่มติดตั้งเปลี่ยนตามที่เลือก</li>
+            </ol>
+            <div class="note">
+                <strong data-lang="en">No API is required.</strong>
+                <strong data-lang="th">ไม่จำเป็นต้องมี API</strong>
+                <span data-lang="en"> This project is driven by static files and browser features.</span>
+                <span data-lang="th"> โปรเจกต์นี้ขับเคลื่อนด้วยไฟล์ static และความสามารถของเบราว์เซอร์</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <span class="label">
+                <span data-lang="en">Deployment study cases</span>
+                <span data-lang="th">กรณีศึกษาการ deploy</span>
+            </span>
+            <h2 data-lang="en">If you deploy it another way</h2>
+            <h2 data-lang="th">ถ้านำไป deploy แบบอื่นควรศึกษาอะไร</h2>
+            <div data-lang="en">
+                <p>Study the hosting path rules first. The current project uses a custom-domain web app, while images,
+                    <code>index.json</code>, manifest files, and binaries are served from a public GitHub Pages
+                    repository.</p>
+                                <p><strong>UI topology for split hosting</strong></p>
+                                <div class="split-topology">
+                                    <div class="flow-map">
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">Web app host</span>
+                            <strong>Your static host</strong>
+                            <p>Hosts <code>index.html</code>, UI logic, styles, and the install button on your own
+                                domain such as <code>https://flash.example.com</code>.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Browser</span>
+                            <strong>User opens the flasher UI</strong>
+                            <p>The browser loads the page from your host, runs the frontend logic, and starts the
+                                firmware lookup flow.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Firmware catalog</span>
+                            <strong>GitHub Pages serves <code>index.json</code></strong>
+                            <p>The UI fetches the firmware list from GitHub Pages so you can update choices without
+                                redeploying the web app.</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">Manifest</span>
+                            <strong>Selected entry becomes manifest URL</strong>
+                            <p>The selected <code>file</code> value is resolved to a full GitHub Pages manifest path
+                                such as <code>/firmware/manifest-v1.json</code>.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Binary source</span>
+                            <strong>GitHub Pages serves firmware binaries</strong>
+                            <p>The manifest points to <code>bootloader.bin</code>, <code>partitions.bin</code>, and
+                                <code>firmware.bin</code> files hosted in the same public repository.</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Flashing</span>
+                            <strong>ESP Web Tools writes to the device</strong>
+                            <p>After the user approves serial access, the browser downloads the binaries and flashes the
+                                connected ESP board.</p>
+                        </div>
+                    </div>
+                                    </div>
+                                </div>
+                <ul>
+                    <li><strong>GitHub Pages subpath:</strong> public files are under paths like
+                        <code>https://binarybearzz.github.io/BinaryBearx-esp-web-tool/...</code>.</li>
+                    <li><strong>Custom-domain web app:</strong> the website itself can live elsewhere, but must fetch
+                        the firmware metadata from the public repository.</li>
+                    <li><strong>Local file open:</strong> opening with <code>file://</code> is a bad test for this app
+                        because <code>fetch("firmware/index.json")</code> may fail. Use a simple local server.</li>
+                    <li><strong>Static host/CDN:</strong> confirm the manifest and binary files are publicly readable
+                        over HTTPS.</li>
+                </ul>
+                <p><strong>Current study case: custom domain for the web, public GitHub Pages for firmware
+                        files.</strong></p>
+                <pre>Web app:
+https://flash.example.com/
+
+Firmware files:
+https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/index.json
+https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/manifest-v1.json
+https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/version1/app.bin</pre>
+                <p>In this case, your web page on <code>flash.example.com</code> should not fetch
+                    <code>firmware/index.json</code> as a local relative path anymore, because that would look for
+                    <code>https://flash.example.com/firmware/index.json</code>. Instead, the page must fetch the full
+                    GitHub Pages URL and resolve manifest names against that same public base.</p>
+                <ul>
+                    <li>The firmware list source becomes a full URL, for example
+                        <code>https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/index.json</code>.</li>
+                    <li>If <code>index.json</code> still contains only filenames like <code>manifest-v1.json</code>, the
+                        frontend must prepend the GitHub Pages firmware base path before passing it to the install
+                        button.</li>
+                    <li>If manifests already use full GitHub Pages binary URLs, they are independent from the
+                        custom-domain website path.</li>
+                    <li>If manifests reference absolute external URLs, those URLs must remain public and stable.</li>
+                </ul>
+            </div>
+            <div data-lang="th">
+                <p>สิ่งแรกที่ควรศึกษาคือกฎเรื่อง path ของระบบโฮสต์ โดยโปรเจกต์ปัจจุบันใช้หน้าเว็บบน custom domain
+                    แต่รูปภาพ, <code>index.json</code>, manifest และ binary ถูกเสิร์ฟจาก public GitHub Pages repository
+                </p>
+                                <p><strong>UI topology สำหรับการแยก host</strong></p>
+                                <div class="split-topology">
+                                    <div class="flow-map">
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">Web app host</span>
+                            <strong>โฮสต์ static ของคุณเอง</strong>
+                            <p>ใช้เก็บ <code>index.html</code>, logic ของ UI, styles และปุ่มติดตั้งบนโดเมนของคุณ เช่น
+                                <code>https://flash.example.com</code></p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Browser</span>
+                            <strong>ผู้ใช้เปิดหน้า flasher</strong>
+                            <p>เบราว์เซอร์โหลดหน้าเว็บจากโฮสต์ของคุณ รัน frontend logic แล้วเริ่ม flow
+                                การค้นหารายการเฟิร์มแวร์</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Firmware catalog</span>
+                            <strong>GitHub Pages เสิร์ฟ <code>index.json</code></strong>
+                            <p>UI ไปดึงรายการเฟิร์มแวร์จาก GitHub Pages เพื่อให้คุณแก้ตัวเลือกได้โดยไม่ต้อง redeploy
+                                หน้าเว็บหลัก</p>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-row">
+                        <div class="flow-node">
+                            <span class="flow-tag">Manifest</span>
+                            <strong>รายการที่เลือกถูกแปลงเป็น manifest URL</strong>
+                            <p>ค่า <code>file</code> ที่เลือกจะถูกประกอบเป็น full path ของ manifest บน GitHub Pages เช่น
+                                <code>/firmware/manifest-v1.json</code></p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Binary source</span>
+                            <strong>GitHub Pages เสิร์ฟไฟล์เฟิร์มแวร์</strong>
+                            <p>manifest จะชี้ไปที่ <code>bootloader.bin</code>, <code>partitions.bin</code> และ
+                                <code>firmware.bin</code> ที่อยู่ใน public repository เดียวกัน</p>
+                        </div>
+                        <div class="flow-node">
+                            <span class="flow-tag">Flashing</span>
+                            <strong>ESP Web Tools เขียนลงอุปกรณ์</strong>
+                            <p>หลังผู้ใช้ยืนยันสิทธิ์ serial แล้ว เบราว์เซอร์จะดาวน์โหลด binary และแฟลชลงบอร์ด ESP
+                                ที่เชื่อมต่ออยู่</p>
+                        </div>
+                    </div>
+                                    </div>
+                                </div>
+                <ul>
+                    <li><strong>GitHub Pages subpath:</strong> ไฟล์สาธารณะอยู่ใต้ path อย่าง
+                        <code>https://binarybearzz.github.io/BinaryBearx-esp-web-tool/...</code></li>
+                    <li><strong>Custom-domain web app:</strong> ตัวเว็บไซต์อาจอยู่คนละที่ได้ แต่ต้องดึง metadata
+                        ของเฟิร์มแวร์จาก public repository</li>
+                    <li><strong>เปิดแบบ file://:</strong> ไม่ควรใช้ทดสอบแอปนี้ เพราะ
+                        <code>fetch("firmware/index.json")</code> อาจล้มเหลว ควรใช้ local server</li>
+                    <li><strong>Static host/CDN:</strong> ต้องตรวจว่า manifest และ binary เปิดอ่านได้สาธารณะผ่าน HTTPS
+                    </li>
+                </ul>
+                <p><strong>กรณีศึกษาปัจจุบัน: หน้าเว็บอยู่ custom domain แต่ไฟล์เฟิร์มแวร์อยู่บน public GitHub
+                        Pages</strong></p>
+                <pre>หน้าเว็บ:
+https://flash.example.com/
+
+ไฟล์เฟิร์มแวร์:
+https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/index.json
+https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/manifest-v1.json
+https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/version1/app.bin</pre>
+                <p>ในกรณีนี้ หน้าเว็บที่อยู่บน <code>flash.example.com</code> ไม่ควร fetch
+                    <code>firmware/index.json</code> แบบ relative path อีกแล้ว เพราะเบราว์เซอร์จะไปหา
+                    <code>https://flash.example.com/firmware/index.json</code> แทน ดังนั้นต้องชี้ไปที่ full GitHub Pages
+                    URL โดยตรง และต้องประกอบชื่อ manifest กับ public base เดียวกัน</p>
+                <ul>
+                    <li>แหล่งข้อมูลรายการเฟิร์มแวร์ต้องเป็น full URL เช่น
+                        <code>https://binarybearzz.github.io/BinaryBearx-esp-web-tool/firmware/index.json</code></li>
+                    <li>ถ้า <code>index.json</code> ยังเก็บแค่ชื่อไฟล์อย่าง <code>manifest-v1.json</code> ฝั่ง frontend
+                        ต้องเติม base path ของ GitHub Pages ก่อนส่งให้ปุ่มติดตั้ง</li>
+                    <li>ถ้า manifest ใช้ full GitHub Pages URL สำหรับ binary path เหล่านั้นจะไม่ขึ้นกับ path ของหน้าเว็บ
+                        custom domain</li>
+                    <li>ถ้า manifest ใช้ absolute external URL URL เหล่านั้นต้องเปิดสาธารณะและเสถียรระยะยาว</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- <section class="card">
+      <span class="label">
+        <span data-lang="en">Backend use case</span>
+        <span data-lang="th">กรณีที่ต้องใช้ backend</span>
+      </span>
+      <h2 data-lang="en">If you need a backend API, what APIs should exist?</h2>
+      <h2 data-lang="th">ถ้าต้องมี backend API ควรมี API อะไรบ้าง</h2>
+      <div data-lang="en">
+        <p>You only need a backend when firmware data should be controlled dynamically, filtered by customer/device, protected by login, or generated from a release system. A practical backend can stay small.</p>
+        <table class="table">
+          <tr>
+            <th><code>GET /api/firmwares</code></th>
+            <td>Returns the firmware list used instead of <code>firmware/index.json</code>. This is the API version of the dropdown catalog.</td>
+          </tr>
+          <tr>
+            <th><code>GET /api/firmwares/:id</code></th>
+            <td>Returns detail for one firmware item, such as display name, board type, version, release note, and manifest URL.</td>
+          </tr>
+          <tr>
+            <th><code>GET /api/firmwares/:id/manifest</code></th>
+            <td>Returns the manifest JSON directly if you want the backend to generate or gate it.</td>
+          </tr>
+          <tr>
+            <th><code>GET /api/releases/latest</code></th>
+            <td>Optional endpoint for auto-selecting the latest stable firmware or release channel.</td>
+          </tr>
+          <tr>
+            <th><code>POST /api/logs/install</code></th>
+            <td>Optional endpoint for recording install attempts, device model, firmware choice, or support diagnostics.</td>
+          </tr>
+        </table>
+        <p>In most cases, the actual binary files should still be served as static files or from object storage/CDN, while the backend only decides which firmware and manifest the user may see.</p>
+      </div>
+      <div data-lang="th">
+        <p>จะต้องมี backend ก็ต่อเมื่อข้อมูลเฟิร์มแวร์ต้องถูกควบคุมแบบ dynamic เช่น กรองตามลูกค้าหรืออุปกรณ์ ต้อง login ก่อนเห็นไฟล์ หรือสร้างข้อมูลจากระบบ release อัตโนมัติ โดยทั่วไป backend ที่ดีไม่จำเป็นต้องใหญ่</p>
+        <table class="table">
+          <tr>
+            <th><code>GET /api/firmwares</code></th>
+            <td>คืนรายการเฟิร์มแวร์แทน <code>firmware/index.json</code> เป็น API เวอร์ชันของข้อมูลที่ใช้สร้าง dropdown</td>
+          </tr>
+          <tr>
+            <th><code>GET /api/firmwares/:id</code></th>
+            <td>คืนรายละเอียดของเฟิร์มแวร์หนึ่งรายการ เช่น ชื่อที่แสดง รุ่นบอร์ด เวอร์ชัน release note และ manifest URL</td>
+          </tr>
+          <tr>
+            <th><code>GET /api/firmwares/:id/manifest</code></th>
+            <td>คืน manifest JSON โดยตรง ถ้าต้องการให้ backend เป็นคนสร้างหรือควบคุมสิทธิ์</td>
+          </tr>
+          <tr>
+            <th><code>GET /api/releases/latest</code></th>
+            <td>API เสริมสำหรับเลือกเฟิร์มแวร์ล่าสุดอัตโนมัติ หรือแยกตาม release channel</td>
+          </tr>
+          <tr>
+            <th><code>POST /api/logs/install</code></th>
+            <td>API เสริมสำหรับเก็บ log การติดตั้ง รุ่นอุปกรณ์ เฟิร์มแวร์ที่เลือก หรือข้อมูลช่วยซัพพอร์ต</td>
+          </tr>
+        </table>
+        <p>ส่วนใหญ่ไฟล์ binary จริงควรถูกเสิร์ฟเป็น static file หรือจาก object storage/CDN ต่อไป ส่วน backend มีหน้าที่ตัดสินใจว่าผู้ใช้จะเห็น manifest และ firmware ชุดไหน</p>
+      </div>
+    </section> -->
+
+        <!-- <section class="card">
+      <span class="label">
+        <span data-lang="en">Static vs API examples</span>
+        <span data-lang="th">ตัวอย่าง Static กับ API</span>
+      </span>
+      <h2 data-lang="en">Can firmware/, index.json, and manifest*.json still exist? Yes.</h2>
+      <h2 data-lang="th">ยังใช้ firmware/, index.json และ manifest*.json ได้ไหม? ได้</h2>
+      <div data-lang="en">
+        <p><strong>Use case A: current project pattern.</strong> Keep the website on your domain, but host firmware metadata and binaries in the public GitHub Pages repository.</p>
+        <pre>https://flash.example.com/
+      └─ index.html
+
+      https://binarybearzz.github.io/BinaryBearx-esp-web-tool/
+      ├─ firmware/index.json
+      ├─ firmware/manifest-v1.json
+      └─ firmware/version1/app.bin</pre>
+        <p>The page reads the public <code>index.json</code>, resolves each manifest name to the public GitHub Pages base URL, then downloads binaries from the URLs written in that manifest.</p>
+
+        <p><strong>Use case C: backend generates the manifest.</strong> Useful when firmware depends on customer, region, license, or signed download URLs.</p>
+        <pre>GET /api/firmwares/virtualthingconn/manifest
+
+{
+  "name": "AIS 4G Board [VirtualThing for test]",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "https://cdn.example.com/releases/v1/app.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}</pre>
+        <p>Here, the backend replaces the physical <code>manifest*.json</code> file with an API response, while binaries may still live on a CDN.</p>
+      </div>
+      <div data-lang="th">
+        <p><strong>Use case A: รูปแบบปัจจุบันของโปรเจกต์</strong> ให้หน้าเว็บอยู่บนโดเมนของคุณ แต่โฮสต์ metadata และ binary ของเฟิร์มแวร์ไว้ใน public GitHub Pages repository</p>
+        <pre>https://flash.example.com/
+      └─ index.html
+
+      https://binarybearzz.github.io/BinaryBearx-esp-web-tool/
+      ├─ firmware/index.json
+      ├─ firmware/manifest-v1.json
+      └─ firmware/version1/app.bin</pre>
+        <p>หน้าเว็บจะอ่าน <code>index.json</code> จาก public repo จากนั้นประกอบชื่อ manifest ให้กลายเป็น GitHub Pages URL เต็ม แล้วค่อยดาวน์โหลด binary ตาม URL ที่เขียนไว้ใน manifest</p>
+
+        <p><strong>Use case C: backend สร้าง manifest เอง</strong> เหมาะเมื่อเฟิร์มแวร์ขึ้นกับลูกค้า ภูมิภาค license หรือ signed URL ที่ต้องสร้างใหม่ทุกครั้ง</p>
+        <pre>GET /api/firmwares/virtualthingconn/manifest
+
+{
+  "name": "AIS 4G Board [VirtualThing for test]",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "parts": [
+        {
+          "path": "https://cdn.example.com/releases/v1/app.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}</pre>
+        <p>กรณีนี้ backend จะมาแทนที่ไฟล์ <code>manifest*.json</code> โดยตรง ส่วน binary จริงยังอาจถูกเก็บไว้บน CDN ได้เหมือนเดิม</p>
+      </div>
+    </section> -->
+
+        <section class="card">
+            <span class="label">
+                <span data-lang="en">Hosting, CDN, and limits</span>
+                <span data-lang="th">Hosting, CDN และข้อจำกัด</span>
+            </span>
+            <h2 data-lang="en">What this page needs, what CDN helps with, and current constraints</h2>
+            <h2 data-lang="th">สิ่งที่หน้าเว็บนี้ต้องใช้ บทบาทของ CDN และข้อจำกัดปัจจุบัน</h2>
+            <div data-lang="en">
+                <p>This page does not require a backend or a CDN by itself. It only needs public static hosting for the
+                    page, the firmware catalog, manifest files, and binary files. A CDN becomes useful when you want
+                    faster global downloads, better cache control, or a more stable delivery path for large binaries.
+                </p>
+                <ul>
+                    <li><strong>Required hosting:</strong> the web page, <code>index.json</code>, manifests, and
+                        binaries must be reachable over HTTPS.</li>
+                    <li><strong>CORS:</strong> the host serving manifests and binaries must allow browser access, or
+                        downloads may fail.</li>
+                    <li><strong>CDN is optional:</strong> use it if binaries are large, users are in many regions, or
+                        GitHub Pages is not the final delivery channel.</li>
+                    <li><strong>Stable URLs:</strong> if manifest or binary URLs change, expire, or become private,
+                        flashing breaks immediately.</li>
+                    <li><strong>Cache/versioning:</strong> versioned filenames or cache-busting help prevent users from
+                        flashing stale binaries.</li>
+                    <li><strong>Trust and integrity:</strong> binary hosts should be controlled by you or a trusted
+                        release pipeline.</li>
+                    <li><strong>Not supported over file://:</strong> opening the page directly from the filesystem is
+                        not a reliable test because <code>fetch()</code> may fail.</li>
+                    <li><strong>Browser limitation:</strong> flashing depends on Web Serial, so Safari and Firefox are
+                        not valid targets for the install flow.</li>
+                    <li><strong>User permission limitation:</strong> the page cannot auto-select a serial port or bypass
+                        the browser permission dialog.</li>
+                </ul>
+            </div>
+            <div data-lang="th">
+                <p>หน้าเว็บนี้ไม่ได้บังคับว่าต้องมี backend หรือ CDN เสมอไป สิ่งที่ต้องมีจริง ๆ คือ static hosting
+                    ที่เปิดสาธารณะสำหรับหน้าเว็บ รายการเฟิร์มแวร์ manifest และไฟล์ binary ส่วน CDN
+                    จะมีประโยชน์เมื่ออยากให้ดาวน์โหลดได้เร็วขึ้นจากหลายภูมิภาค คุม cache ได้ดีขึ้น
+                    หรือมีเส้นทางส่งไฟล์ที่เสถียรกว่าสำหรับ binary ขนาดใหญ่</p>
+                <ul>
+                    <li><strong>สิ่งที่ต้องมี:</strong> หน้าเว็บ, <code>index.json</code>, manifest และ binary
+                        ต้องเปิดผ่าน HTTPS ได้จริง</li>
+                    <li><strong>CORS:</strong> host ที่เสิร์ฟ manifest และ binary ต้องอนุญาตให้เบราว์เซอร์เข้าถึง
+                        ไม่เช่นนั้นการดาวน์โหลดจะล้มเหลว</li>
+                    <li><strong>CDN เป็นตัวเลือก:</strong> ควรใช้เมื่อไฟล์ binary ใหญ่ ผู้ใช้อยู่หลายภูมิภาค หรือ GitHub
+                        Pages ไม่ใช่ช่องทางส่งไฟล์สุดท้าย</li>
+                    <li><strong>URL ต้องเสถียร:</strong> ถ้า URL ของ manifest หรือ binary เปลี่ยน หมดอายุ หรือกลายเป็น
+                        private การแฟลชจะพังทันที</li>
+                    <li><strong>Cache/versioning:</strong> ควรมีชื่อไฟล์แบบมีเวอร์ชันหรือ cache-busting
+                        เพื่อไม่ให้ผู้ใช้แฟลชไฟล์เก่า</li>
+                    <li><strong>ความน่าเชื่อถือ:</strong> host ของ binary ควรถูกควบคุมโดยคุณหรือ release pipeline
+                        ที่เชื่อถือได้</li>
+                    <li><strong>ไม่เหมาะกับ file://:</strong> การเปิดไฟล์ตรงจากเครื่องไม่ใช่วิธีทดสอบที่เชื่อถือได้
+                        เพราะ <code>fetch()</code> อาจล้มเหลว</li>
+                    <li><strong>ข้อจำกัดของเบราว์เซอร์:</strong> การแฟลชพึ่งพา Web Serial ดังนั้น Safari และ Firefox ใช้
+                        flow ติดตั้งนี้ไม่ได้</li>
+                    <li><strong>ข้อจำกัดด้านสิทธิ์:</strong> หน้าเว็บไม่สามารถเลือก serial port
+                        แทนผู้ใช้หรือข้ามหน้าต่างขอสิทธิ์ของเบราว์เซอร์ได้</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="grid">
+            <section class="card">
+                <span class="label">
+                    <span data-lang="en">Tech stack</span>
+                    <span data-lang="th">เทคสแตก</span>
+                </span>
+                <h3 data-lang="en">Libraries, SDKs, and browser features used in this web flasher</h3>
+                <h3 data-lang="th">ไลบรารี SDK และความสามารถของเบราว์เซอร์ที่ใช้ใน web flasher นี้</h3>
+                <div data-lang="en">
+                    <table class="table">
+                        <tr>
+                            <th>HTML + CSS + Vanilla JS</th>
+                            <td>The app is a plain static page without a frontend framework or build pipeline.</td>
+                        </tr>
+                        <tr>
+                            <th><code>esp-web-tools</code></th>
+                            <td>Provides the <code>&lt;esp-web-install-button&gt;</code> web component that handles the install flow and flashing UI.</td>
+                        </tr>
+                        <tr>
+                            <th><code>improv-wifi-serial-sdk</code></th>
+                            <td>Loaded as a browser SDK for serial-based Wi-Fi provisioning workflows when the project wants Improv integration.</td>
+                        </tr>
+                        <tr>
+                            <th><code>Font Awesome</code></th>
+                            <td>Used for the GitHub icon in the footer area.</td>
+                        </tr>
+                        <tr>
+                            <th><code>fetch()</code></th>
+                            <td>Used by <code>loadFirmwareList()</code> to request <code>firmware/index.json</code> from GitHub Pages.</td>
+                        </tr>
+                        <tr>
+                            <th><code>Web Serial API</code></th>
+                            <td>The core browser capability required for device connection and flashing.</td>
+                        </tr>
+                        <tr>
+                            <th>GitHub Pages assets</th>
+                            <td>Used as the public host for firmware metadata, manifests, binaries, favicon, and background image assets.</td>
+                        </tr>
+                    </table>
+                </div>
+                <div data-lang="th">
+                    <table class="table">
+                        <tr>
+                            <th>HTML + CSS + Vanilla JS</th>
+                            <td>แอปนี้เป็น static page แบบตรงไปตรงมา ไม่มี frontend framework และไม่มี build pipeline</td>
+                        </tr>
+                        <tr>
+                            <th><code>esp-web-tools</code></th>
+                            <td>ใช้สร้าง web component <code>&lt;esp-web-install-button&gt;</code> สำหรับ flow การติดตั้งและ UI การแฟลช</td>
+                        </tr>
+                        <tr>
+                            <th><code>improv-wifi-serial-sdk</code></th>
+                            <td>ถูกโหลดเป็น browser SDK สำหรับงาน provision Wi-Fi ผ่าน serial เมื่อโปรเจกต์ต้องการ integration กับ Improv</td>
+                        </tr>
+                        <tr>
+                            <th><code>Font Awesome</code></th>
+                            <td>ใช้สำหรับแสดงไอคอน GitHub บริเวณด้านล่างของหน้า</td>
+                        </tr>
+                        <tr>
+                            <th><code>fetch()</code></th>
+                            <td>ใช้ใน <code>loadFirmwareList()</code> เพื่อดึง <code>firmware/index.json</code> จาก GitHub Pages</td>
+                        </tr>
+                        <tr>
+                            <th><code>Web Serial API</code></th>
+                            <td>เป็นความสามารถหลักของเบราว์เซอร์ที่ใช้เชื่อมต่ออุปกรณ์และแฟลชเฟิร์มแวร์</td>
+                        </tr>
+                        <tr>
+                            <th>GitHub Pages assets</th>
+                            <td>ใช้เป็น public host สำหรับ metadata ของเฟิร์มแวร์ manifest binary favicon และรูปภาพพื้นหลัง</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <section class="card">
+                <span class="label">
+                    <span data-lang="en">Browser requirement</span>
+                    <span data-lang="th">ข้อกำหนดของเบราว์เซอร์</span>
+                </span>
+                <h3 data-lang="en">Why Chrome / Chromium matters</h3>
+                <h3 data-lang="th">ทำไมต้องใช้ Chrome / Chromium</h3>
+                <p data-lang="en">The flashing flow depends on the <strong>Web Serial API</strong>. That API is
+                    supported in Chromium-based browsers, so the page shows a warning if the browser does not support
+                    it.</p>
+                <p data-lang="th">กระบวนการแฟลชพึ่งพา <strong>Web Serial API</strong> ซึ่งรองรับในเบราว์เซอร์ตระกูล
+                    Chromium ดังนั้นหน้าเว็บจะแจ้งเตือนถ้าเบราว์เซอร์ไม่รองรับ</p>
+            </section>
+
+            <section class="card">
+                <span class="label">
+                    <span data-lang="en">Project structure</span>
+                    <span data-lang="th">โครงสร้างโปรเจกต์</span>
+                </span>
+                <h3 data-lang="en">Simple folder map</h3>
+                <h3 data-lang="th">แผนผังโฟลเดอร์แบบง่าย</h3>
+                <pre>webflasher/
+├─ index.html
+├─ readme.md
+├─ image/
+├─ firmware/
+│  ├─ index.json
+│  ├─ manifest-*.json
+│  └─ firmware assets
+└─ explain/
+   └─ index.html</pre>
+            </section>
+        </div>
+
+        <section class="card">
+            <span class="label">
+                <span data-lang="en">Good mental model</span>
+                <span data-lang="th">แนวคิดที่ควรใช้มองระบบ</span>
+            </span>
+            <h2 data-lang="en">How to think about the project</h2>
+            <h2 data-lang="th">มองโปรเจกต์นี้แบบไหนจะเข้าใจง่าย</h2>
+            <p data-lang="en">
+                The page is a <strong>menu + launcher</strong>. The HTML builds the UI, the JSON file supplies the
+                available firmware choices, and each manifest tells ESP Web Tools what to flash.
+            </p>
+            <p data-lang="th">
+                หน้านี้คือ <strong>เมนู + ตัวสั่งงาน</strong> โดย HTML สร้าง UI, ไฟล์ JSON จัดเตรียมตัวเลือกเฟิร์มแวร์
+                และ manifest จะบอก ESP Web Tools ว่าต้องแฟลชอะไร
+            </p>
+            <div class="note danger">
+                <span data-lang="en">Keep manifest labels user-facing and descriptive, because they appear directly in
+                    the dropdown.</span>
+                <span data-lang="th">ควรตั้งชื่อ manifest ให้คนอ่านเข้าใจง่าย เพราะชื่อเหล่านี้จะแสดงตรงใน
+                    dropdown</span>
+            </div>
+        </section>
+
+        <p class="footer" data-lang="en">
+            If the project grows, separate explanation pages can be added for firmware conventions, browser support, or
+            manifest format.
+        </p>
+        <p class="footer" data-lang="th">
+            ถ้าโปรเจกต์ใหญ่ขึ้น สามารถแยกหน้าคำอธิบายสำหรับ convention ของเฟิร์มแวร์ การรองรับเบราว์เซอร์ หรือรูปแบบ
+            manifest ได้
+        </p>
+    </div>
+    <script>
+        const languageButtons = document.querySelectorAll('[data-set-lang]');
+        const pageTitles = {
+            en: 'BinaryBearx ESP Web Flasher - Project Explanation',
+            th: 'BinaryBearx ESP Web Flasher - คำอธิบายโปรเจกต์'
+        };
+
+        function setLanguage(language) {
+            document.body.setAttribute('data-current-lang', language);
+            document.documentElement.lang = language;
+            document.title = pageTitles[language] || pageTitles.en;
+
+            for (const button of languageButtons) {
+                button.classList.toggle('active', button.getAttribute('data-set-lang') === language);
+            }
+        }
+
+        for (const button of languageButtons) {
+            button.addEventListener('click', () => {
+                setLanguage(button.getAttribute('data-set-lang'));
+            });
+        }
+
+        setLanguage('en');
+    </script>
+</body>
+
+</html>
