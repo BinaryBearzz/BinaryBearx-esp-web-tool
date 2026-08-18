@@ -1,5 +1,5 @@
 [
-  { "file": "manifest-v2.json", "name": "AIS 4G Board Example [4G GSM] firmware[ExtensionBoard]" },
   { "file": "manifest-v5.json", "name": "AIS 4G Board Example [4G GSM] firmware[BuiltinLED+Sensor+INTERVAL]" },
+  { "file": "manifest-v2.json", "name": "AIS 4G Board Example [4G GSM] firmware[ExtensionBoard]" },
   { "file": "manifest-pre-flash-v2-signal.json", "name": "AIS 4G Board [4G GSM] Pre-Flash firmware Signal Analyzer [2.0.0]" }
 ]
