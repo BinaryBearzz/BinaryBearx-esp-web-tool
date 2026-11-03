@@ -1,0 +1,14 @@
+{
+  "name": "AIS 4G Board Example [4G GSM] firmware[Soil GVT Extension]",
+  "new_install_prompt_erase": true,
+  "builds": [
+    { 
+      "chipFamily": "ESP32",
+      "parts": [
+        { "path": "/BinaryBearx-esp-web-tool/firmware/soil-gvt-ext/bootloader.bin", "offset": 4096 },       
+        { "path": "/BinaryBearx-esp-web-tool/firmware/soil-gvt-ext/partitions.bin", "offset": 32768 } ,
+        { "path": "/BinaryBearx-esp-web-tool/firmware/soil-gvt-ext/firmware.bin", "offset": 65536 }
+      ]
+    }
+  ]
+}
